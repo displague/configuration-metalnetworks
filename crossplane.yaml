@@ -20,7 +20,7 @@ spec:
     version: ">=v1.14.1-0"
   # Add your dependencies here
   dependsOn:
-    - provider: xpkg.upbound.io/crossplane-contrib/provider-jet-equinix
+    - provider: xpkg.upbound.io/equinix/provider-jet-equinix
       version: "v0.6.1"
     - function: xpkg.upbound.io/crossplane-contrib/function-patch-and-transform
       version: "v0.3.0"

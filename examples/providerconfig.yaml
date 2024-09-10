@@ -16,7 +16,7 @@ kind: Provider
 metadata:
   name: crossplane-contrib-provider-jet-equinix
 spec:
-  package: xpkg.upbound.io/crossplane-contrib/provider-jet-equinix:v0.6.1
+  package: xpkg.upbound.io/equinix/provider-jet-equinix:v0.6.1
   runtimeConfigRef:
     apiVersion: pkg.crossplane.io/v1beta1
     kind: DeploymentRuntimeConfig
