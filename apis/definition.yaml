@@ -1,17 +1,14 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xcfgresources.cfg.example.org
+  name: metalnetworks.equinix.xrds.crossplane.io
 spec:
-  group: cfg.example.org
+  group: equinix.xrds.crossplane.io
   names:
-    kind: XCfgResource
-    plural: xcfgresources
-  claimNames:
-    kind: CfgResource
-    plural: cfgresources
-  connectionSecretKeys:
-    - test
+    kind: MetalNetwork
+    listKind: MetalNetworkList
+    plural: metalnetworks
+    singular: metalnetwork
   versions:
     - name: v1alpha1
       served: true
@@ -23,7 +20,56 @@ spec:
             spec:
               type: object
               properties:
-                data:
+                vrfName:
                   type: string
+                  description: "Name of the VRF"
+                projectID:
+                  type: string
+                  description: "Equinix Metal Project ID"
+                description:
+                  type: string
+                  description: "Description of the VRF"
+                metro:
+                  type: string
+                  description: "Metro area for the VRF"
+                ipPrefixes:
+                  type: array
+                  items:
+                    type: string
+                  description: "IP prefixes for the VRF"
+                  default: ["192.168.100.0/24"]
+                vxlan:
+                  type: integer
+                  description: "VXLAN ID for the VRF"
+                  default: 1000
               required:
-                - data
+                - vrfName
+                - projectID
+                - metro
+            status:
+              type: object
+              properties:
+                vlanID:
+                  type: string
+                vrfID:
+                  type: string
+                gatewayID:
+                  type: string
+                ipReservationID:
+                  type: string
+                conditions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      status:
+                        type: string
+                      reason:
+                        type: string
+                      message:
+                        type: string
+  claimNames:
+    kind: MetalNetworkClaim
+    plural: metalnetworkclaims
