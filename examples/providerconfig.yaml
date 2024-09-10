@@ -1,41 +1,43 @@
-apiVersion: kubernetes.crossplane.io/v1alpha1
+apiVersion: equinix.jet.crossplane.io/v1alpha1
 kind: ProviderConfig
 metadata:
   name: default
 spec:
   credentials:
-    source: InjectedIdentity
-
+    source: Secret
+    secretRef:
+      name: example-creds
+      namespace: crossplane-system
+      key: credentials
 ---
-
 # Make sure provider-kubernetes has enough permissions to install your objects into cluster
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: crossplane-contrib-provider-kubernetes
+  name: crossplane-contrib-provider-jet-equinix
 spec:
-  package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v0.12.1
+  package: xpkg.upbound.io/crossplane-contrib/provider-jet-equinix:v0.6.1
   runtimeConfigRef:
     apiVersion: pkg.crossplane.io/v1beta1
     kind: DeploymentRuntimeConfig
-    name: provider-kubernetes
+    name: provider-jet-equinix
 ---
 apiVersion: pkg.crossplane.io/v1beta1
 kind: DeploymentRuntimeConfig
 metadata:
-  name: provider-kubernetes
+  name: provider-jet-equinix
 spec:
   serviceAccountTemplate:
     metadata:
-      name: provider-kubernetes
+      name: provider-jet-equinix
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: provider-kubernetes-cluster-admin
+  name: provider-jet-equinix-cluster-admin
 subjects:
   - kind: ServiceAccount
-    name: provider-kubernetes
+    name: provider-jet-equinix
     namespace: crossplane-system
 roleRef:
   kind: ClusterRole

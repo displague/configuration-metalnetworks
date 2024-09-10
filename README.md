@@ -1,4 +1,14 @@
-# configuration-template
+# configuration-metalnetworks
+
+This is a simple example that demonstrates how to use the Equinix Metal provider to create network infrastructure, including a VLAN, Gateway with VRF, and IP Reservations.
+
+## Usage
+
+TODO: replace this with usage instructions
+
+## Template
+
+TODO: remove this section
 
 A template for writing a [Configuration].
 

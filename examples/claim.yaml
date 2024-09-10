@@ -1,9 +1,13 @@
-apiVersion: cfg.example.org/v1alpha1
-kind: CfgResource
+apiVersion: equinix.xrds.crossplane.io/v1alpha1
+kind: MetalNetworkClaim
 metadata:
+  name: metal-network-instance
   namespace: default
-  name: simple-example
 spec:
-  data: "I'm cool!"
-  compositionRef:
-    name: cfg-composition
+  description: created using crossplane composition
+  ipPrefixes:
+  - 192.168.100.0/24
+  metro: da
+  projectID: example-uuid
+  vrfName: vrf-via-crossplane
+  vxlan: 1000
