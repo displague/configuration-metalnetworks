@@ -11,5 +11,5 @@ using the Crossplane CLI:
 crossplane xpkg build
 # (Optionally)
 crossplane xpkg login
-crossplane xpkg push displague/configuration-metalnetworks:v0.1.0
+crossplane xpkg push equinix/configuration-metalnetworks:v0.1.0
 ```
