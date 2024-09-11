@@ -1,173 +1,138 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  creationTimestamp: "2024-09-10T02:21:25Z"
-  name: metalnetworkcomposition
+  name: metalnetworks.equinix.xrds.crossplane.io
 spec:
   compositeTypeRef:
     apiVersion: equinix.xrds.crossplane.io/v1alpha1
     kind: MetalNetwork
-  mode: Pipeline
-  pipeline:
-  - functionRef:
-      name: metalnetworkpipeline
-    input:
-      apiVersion: pt.fn.crossplane.io/v1beta1
-      environment: null
-      kind: Resources
-      patchSets: []
-      resources:
-      - base:
-          apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
-          kind: Vrf
-          spec:
-            providerConfigRef:
-              name: default
-        name: metalvrf
-        patches:
-        - fromFieldPath: spec.description
-          toFieldPath: spec.forProvider.description
+  resources:
+    - name: metalvrf
+      base:
+        apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+        kind: Vrf
+        spec:
+          providerConfigRef:
+            name: default
+      patches:
+        - fromFieldPath: "spec.description"
+          toFieldPath: "spec.forProvider.description"
           transforms:
-          - string:
+          - type: string
+            string:
+              type: Format
               fmt: 'Crossplane managed VRF: %s'
-              type: Format
-            type: string
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.vrfName
-          toFieldPath: spec.forProvider.name
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.vrfName
-          toFieldPath: metadata.name
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.projectID
-          toFieldPath: spec.forProvider.projectId
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.description
-          toFieldPath: spec.forProvider.description
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.metro
-          toFieldPath: spec.forProvider.metro
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.ipPrefixes
-          toFieldPath: spec.forProvider.ipRanges
-          type: FromCompositeFieldPath
-        - fromFieldPath: status.atProvider.id
-          toFieldPath: status.vrfID
-          type: ToCompositeFieldPath
-      - base:
-          apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
-          kind: Vlan
-          spec:
-            providerConfigRef:
-              name: default
-        name: metalvlan
-        patches:
-        - fromFieldPath: spec.description
-          toFieldPath: spec.forProvider.description
+        - fromFieldPath: "spec.vrfName"
+          toFieldPath: "spec.forProvider.name"
+        - fromFieldPath: "spec.vrfName"
+          toFieldPath: "metadata.name"
+        - fromFieldPath: "spec.projectID"
+          toFieldPath: "spec.forProvider.projectId"
+        - fromFieldPath: "spec.description"
+          toFieldPath: "spec.forProvider.description"
+        - fromFieldPath: "spec.metro"
+          toFieldPath: "spec.forProvider.metro"
+        - fromFieldPath: "spec.ipPrefixes"
+          toFieldPath: "spec.forProvider.ipRanges"
+        - type: ToCompositeFieldPath
+          fromFieldPath: "status.atProvider.id"
+          toFieldPath: "status.vrfID"
+    - name: metalvlan
+      base:
+        apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+        kind: Vlan
+        spec:
+          providerConfigRef:
+            name: default
+      patches:
+        - fromFieldPath: "spec.description"
+          toFieldPath: "spec.forProvider.description"
           transforms:
-          - string:
+          - type: string
+            string:
+              type: Format
               fmt: 'Crossplane managed VLAN: %s'
-              type: Format
-            type: string
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.vrfName
-          toFieldPath: metadata.name
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.projectID
-          toFieldPath: spec.forProvider.projectId
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.description
-          toFieldPath: spec.forProvider.description
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.metro
-          toFieldPath: spec.forProvider.metro
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.vxlan
-          toFieldPath: spec.forProvider.vxlan
-          type: FromCompositeFieldPath
-        - fromFieldPath: status.atProvider.id
-          toFieldPath: status.vlanID
-          type: ToCompositeFieldPath
-      - base:
-          apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
-          kind: Gateway
-          spec:
-            providerConfigRef:
-              name: default
-        name: metalgateway
-        patches:
-        - fromFieldPath: spec.vrfName
-          toFieldPath: metadata.name
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.projectID
-          toFieldPath: spec.forProvider.projectId
-          type: FromCompositeFieldPath
-        - fromFieldPath: status.ipReservationID
-          toFieldPath: spec.forProvider.ipReservationId
-          type: FromCompositeFieldPath
-        - fromFieldPath: status.vlanID
-          toFieldPath: spec.forProvider.vlanId
-          type: FromCompositeFieldPath
-        - fromFieldPath: status.atProvider.id
-          toFieldPath: status.gatewayID
-          type: ToCompositeFieldPath
-      - base:
-          apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
-          kind: ReservedIPBlock
-          spec:
-            forProvider:
-              type: vrf
-            providerConfigRef:
-              name: default
-        name: metalgatewayipreservation
-        patches:
-        - fromFieldPath: spec.description
-          toFieldPath: spec.forProvider.description
+        - fromFieldPath: "spec.vrfName"
+          toFieldPath: "metadata.name"
+        - fromFieldPath: "spec.projectID"
+          toFieldPath: "spec.forProvider.projectId"
+        - fromFieldPath: "spec.description"
+          toFieldPath: "spec.forProvider.description"
+        - fromFieldPath: "spec.metro"
+          toFieldPath: "spec.forProvider.metro"
+        - fromFieldPath: "spec.vxlan"
+          toFieldPath: "spec.forProvider.vxlan"
+        - type: ToCompositeFieldPath
+          fromFieldPath: "status.atProvider.id"
+          toFieldPath: "status.vlanID"
+    - name: metalgateway
+      base:
+        apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+        kind: Gateway
+        spec:
+          providerConfigRef:
+            name: default
+      patches:
+        - fromFieldPath: "spec.vrfName"
+          toFieldPath: "metadata.name"
+        - fromFieldPath: "spec.projectID"
+          toFieldPath: "spec.forProvider.projectId"
+        - fromFieldPath: "status.ipReservationID"
+          toFieldPath: "spec.forProvider.ipReservationId"
+        - fromFieldPath: "status.vlanID"
+          toFieldPath: "spec.forProvider.vlanId"
+        - type: ToCompositeFieldPath
+          fromFieldPath: "status.atProvider.id"
+          toFieldPath: "status.gatewayID"
+
+    - name: metalgatewayipreservation
+      base:
+        apiVersion: metal.equinix.jet.crossplane.io/v1alpha1
+        kind: ReservedIPBlock
+        spec:
+          forProvider:
+            type: vrf
+          providerConfigRef:
+            name: default
+      patches:
+        - fromFieldPath: "spec.description"
+          toFieldPath: "spec.forProvider.description"
           transforms:
-          - string:
+          - type: string
+            string:
+              type: Format
               fmt: 'Crossplane managed IP Reservation: %s'
-              type: Format
-            type: string
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.vrfName
-          toFieldPath: metadata.name
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.projectID
-          toFieldPath: spec.forProvider.projectId
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.description
-          toFieldPath: spec.forProvider.description
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.metro
-          toFieldPath: spec.forProvider.metro
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.ipPrefixes[0]
-          toFieldPath: spec.forProvider.network
+        - fromFieldPath: "spec.vrfName"
+          toFieldPath: "metadata.name"
+        - fromFieldPath: "spec.projectID"
+          toFieldPath: "spec.forProvider.projectId"
+        - fromFieldPath: "spec.description"
+          toFieldPath: "spec.forProvider.description"
+        - fromFieldPath: "spec.metro"
+          toFieldPath: "spec.forProvider.metro"
+        - fromFieldPath: "spec.ipPrefixes[0]"
+          toFieldPath: "spec.forProvider.network"
           transforms:
-          - string:
-              regexp:
-                group: 1
-                match: (.*)/
-              type: Regexp
-            type: string
-          type: FromCompositeFieldPath
-        - fromFieldPath: spec.ipPrefixes[0]
-          toFieldPath: spec.forProvider.cidr
+            - type: string
+              string:
+                type: Regexp
+                regexp:
+                  match: '(.*)/'
+                  group: 1
+        - fromFieldPath: "spec.ipPrefixes[0]"
+          toFieldPath: "spec.forProvider.cidr"
           transforms:
-          - string:
-              regexp:
-                group: 1
-                match: /(.*)
-              type: Regexp
-            type: string
-          - convert:
-              toType: int
-            type: convert
-          type: FromCompositeFieldPath
-        - fromFieldPath: status.atProvider.id
-          toFieldPath: status.ipReservationID
-          type: ToCompositeFieldPath
-        - fromFieldPath: status.vrfID
-          toFieldPath: spec.initProvider.vrfId
-          type: FromCompositeFieldPath
-    step: patch-and-transform
+            - type: string
+              string:
+                type: Regexp
+                regexp:
+                  match: '/(.*)'
+                  group: 1
+            - type: convert
+              convert:
+                toType: int
+        - type: ToCompositeFieldPath
+          fromFieldPath: "status.atProvider.id"
+          toFieldPath: "status.ipReservationID"
+        - fromFieldPath: "status.vrfID"
+          toFieldPath: "spec.initProvider.vrfId"
